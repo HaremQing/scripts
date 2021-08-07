@@ -1,0 +1,167 @@
+_G.farm = true
+_G.adminkick = true
+
+local Player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Debris = game:GetService("Debris")
+local questui = game.Players.LocalPlayer.PlayerGui.QuestGui.Frame
+local quest = questui.Type
+local dirt = game.Workspace.Dirts
+local posters = game.Workspace.Posters
+local user = game:GetService("VirtualUser")
+local vim = game:GetService("VirtualInputManager")
+local KeyBind = Enum.KeyCode.LeftBracket -- farming
+local annoying = {320890257,123508557,91266525,26429269,47874966,46809841,1259879504,759553490,93443905,1790054299,111786886,193534007,86333768,50070587,423019410,1709838134,166193431,545755568,1841758859,52974081,417910996,2315416652}
+local teleporting = false
+
+for i,plr in pairs(game.Players:GetChildren()) do
+    if table.find(annoying,plr.UserId) and _G.adminkick then
+        Player:Kick("Admin in game")
+    end
+    if plr.Character:FindFirstChild("Torso") and (plr.Character.Torso.Position - Vector3.new(0,10000,0)).Magnitude <= 50 then
+        plr.Character:Destroy()
+        plr:Destroy()
+    end
+end
+
+game.Players.PlayerAdded:Connect(function(plr)
+    if table.find(annoying,plr.UserId) and _G.adminkick then
+        Player:Kick("Admin Joined")
+    end
+end)
+
+coroutine.wrap(function()
+local Player = game.Players.LocalPlayer
+local Char  = Player.Character
+touched,tpdback = false, false
+
+Player.CharacterAdded:connect(function(char)
+   if script.Disabled ~= true then
+       wait(.25)
+       loc = Char.HumanoidRootPart.Position
+       Char:MoveTo(box.Position + Vector3.new(0,.5,0))
+   end
+end)
+
+box = Instance.new('Part',workspace)
+box.Anchored = true
+box.CanCollide = true
+box.Size = Vector3.new(10,1,10)
+box.Position = Vector3.new(0,10000,0)
+box.Touched:connect(function(part)
+
+
+   if (part.Parent.Name == Player.Name) then
+       if touched == false then
+           touched = true
+           function apply()
+                   no = Char.HumanoidRootPart:Clone()
+                   wait(.25)
+                   Char.HumanoidRootPart:Destroy()
+                   no.Parent = Char
+                   Char:MoveTo(loc)
+                   touched = false 
+            end
+           if Char then
+               apply()
+           end
+       end
+   end
+end)
+repeat wait() until Char
+loc = Char.HumanoidRootPart.Position
+Char:MoveTo(box.Position + Vector3.new(0,.5,0))
+end)()
+
+for i,v in ipairs(game.Workspace:GetChildren()) do
+    if v.Name == "Model" and v:FindFirstChild("Model") and v.Model:FindFirstChild("QuestBoard") then
+        questboard = v.Model.QuestBoard
+    end
+end
+
+RunService.Stepped:connect(function()
+    coroutine.wrap(function()
+        if _G.farm then 
+            if game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            end
+        end
+    end)()
+end)
+
+local function tp(obj,offset)
+    teleporting  = true
+    local num = (Player:DistanceFromCharacter(obj.Position)/50)
+    local Tween = TweenService:Create(Player.Character.HumanoidRootPart, TweenInfo.new(num,Enum.EasingStyle.Linear), {CFrame = CFrame.new(obj.Position + offset)})
+    Tween:Play()
+    Tween.Completed:Wait()
+    Tween:Destroy()
+    teleporting = false
+end
+
+function Effect(Color)
+    for i = 1, 7 do
+        local Character = Player.Character or Player.CharacterAdded:Wait()
+		local beam = Instance.new("Part")
+		local mesh = Instance.new("SpecialMesh")
+		beam.CastShadow = false
+		beam.Massless = true
+		beam.CanCollide = false
+		beam.CanTouch = false
+		beam.Anchored = false
+		mesh.MeshType = "Sphere"
+		mesh.Parent = beam
+		beam.Size = Vector3.new(1.5,1.5,1.5)
+		beam.Material = "Neon"
+		beam.BrickColor = BrickColor.new(Color)
+		beam.Parent = game.Workspace
+		local RandomTingz = math.random(-360,360)
+		beam.CFrame = Character:WaitForChild("HumanoidRootPart").CFrame
+		local weld = Instance.new("WeldConstraint")
+		weld.Part0 = beam
+		weld.Part1 = Character:WaitForChild("HumanoidRootPart")
+		weld.Parent = beam
+		beam.Orientation = Vector3.new(RandomTingz,RandomTingz ,RandomTingz)
+		local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+		local tw1 = TweenService:Create(beam, tweenInfo,  {Size = Vector3.new(0,15,0),Transparency = 1})
+		tw1:Play()
+		Debris:AddItem(beam,0.5)			               
+	end
+end
+
+UserInputService.InputBegan:Connect(function(Input, Typing)
+	if Input.KeyCode == KeyBind and not Typing then
+		if _G.farm  then
+			_G.farm = false
+			Effect("Really red")
+		else 
+			_G.farm = true
+			Effect("Lime green")
+		end
+		print(_G.farm)
+	end
+end)
+
+while wait(1) do 
+    if _G.farm and not teleporting and questui.Visible == false then
+        fireclickdetector(questboard.ClickDetector,1)
+    elseif _G.farm and not teleporting and quest.Text:find("Visit") then
+       tp(game.Workspace.DeliverGrandma,Vector3.new(0,0,0))
+    elseif _G.farm and not teleporting and quest.Text:find("Clean") then
+        for i,v in ipairs(dirt:GetChildren()) do
+            if questui.Visible == true then
+                fireclickdetector(v.ClickDetector,1)
+                Wait(0.5)
+            end
+        end
+    elseif _G.farm and not teleporting and quest.Text:find("Place") then
+        for i,v in ipairs(posters:GetChildren()) do
+            if questui.Visible == true  then
+                fireclickdetector(v.ClickDetector,1)
+                Wait(0.5)
+            end
+        end
+    end
+end
