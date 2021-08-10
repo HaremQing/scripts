@@ -1,0 +1,118 @@
+local Player = game.Players.LocalPlayer
+local accept = Player.PlayerGui.HUD.Bottom.Dialogue.Option1
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local marker = game.Workspace.Misc.DSpot2
+local marker2 = game.Workspace.Misc.DSpot1
+local marker3 = game.Workspace.nonLiving["Zac"].DialogueHitbox
+local user = game:GetService("VirtualUser")
+local UserInputService = game:GetService("UserInputService")
+local Debris = game:GetService("Debris")
+local KeyBind = Enum.KeyCode.H -- farming
+local farming = false
+
+local floor = Instance.new("Part")
+floor.Anchored = true
+floor.Parent = Workspace
+floor.Size = Vector3.new(5000,1,5000)
+floor.Position = marker.Position + Vector3.new(0,-5,0)
+local floor2 = Instance.new("Part")
+floor2.Anchored = true
+floor2.Parent = Workspace
+floor2.Size = Vector3.new(50,1,50)
+floor2.Position = Player.Character.HumanoidRootPart.Position + Vector3.new(0,-10,0)
+wait(3)
+game.Workspace.Map:Destroy() 
+
+local function tp(obj)
+    local num = (Player:DistanceFromCharacter(obj.Position)/50)
+    local Tween = TweenService:Create(Player.Character.HumanoidRootPart, TweenInfo.new(num,Enum.EasingStyle.Linear), {CFrame = CFrame.new(obj.Position + Vector3.new(0,0,0))})
+    Tween:Play()
+    Tween.Completed:Wait()
+    Tween:Destroy()
+end
+
+local function checkmark(obj)
+    for i,v in ipairs(game.Workspace.Misc:GetChildren()) do
+        if v:FindFirstChild("ExclamationMark") then
+            return true
+        end
+    end
+    if game.Workspace.nonLiving["Zac"].DialogueHitbox:FindFirstChild("ExclamationMark") then
+        return true
+    end
+    return false
+end
+
+local function click()
+    local mouse = Player:GetMouse()
+    user:CaptureController()
+    user:ClickButton1(Vector2.new(mouse.x,mouse.y))    
+end
+
+function Effect(Color)
+    for i = 1, 7 do
+        local Character = Player.Character or Player.CharacterAdded:Wait()
+		local beam = Instance.new("Part")
+		local mesh = Instance.new("SpecialMesh")
+		beam.CastShadow = false
+		beam.Massless = true
+		beam.CanCollide = false
+		beam.CanTouch = false
+		beam.Anchored = false
+		mesh.MeshType = "Sphere"
+		mesh.Parent = beam
+		beam.Size = Vector3.new(1.5,1.5,1.5)
+		beam.Material = "Neon"
+		beam.BrickColor = BrickColor.new(Color)
+		beam.Parent = game.Workspace
+		local RandomTingz = math.random(-360,360)
+		beam.CFrame = Character:WaitForChild("HumanoidRootPart").CFrame
+		local weld = Instance.new("WeldConstraint")
+		weld.Part0 = beam
+		weld.Part1 = Character:WaitForChild("HumanoidRootPart")
+		weld.Parent = beam
+		beam.Orientation = Vector3.new(RandomTingz,RandomTingz ,RandomTingz)
+		local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+		local tw1 = TweenService:Create(beam, tweenInfo,  {Size = Vector3.new(0,15,0),Transparency = 1})
+		tw1:Play()
+		Debris:AddItem(beam,0.5)			               
+	end
+end
+
+UserInputService.InputBegan:Connect(function(Input, Typing)
+	if Input.KeyCode == KeyBind and not Typing then
+		if _G.farm  then
+			_G.farm = false
+			Effect("Really red")
+		else 
+			_G.farm = true
+			Effect("Lime green")
+		end
+		print(_G.farm)
+	end
+end)
+
+while wait(10) do 
+    if _G.farm and farming == false then
+        farming = true
+        fireclickdetector(game.Workspace.nonLiving["[TRAFFICKING JOB]"].DialogueHitbox.Clicker, 1)
+        wait(1)
+        for count = 1, 50 do
+    	    mouse1click()
+            wait()
+        end
+        tp(marker)
+        wait(50)
+        fireclickdetector(game.Workspace.nonLiving["[DELIVERY JOB 2]"].DialogueHitbox.Clicker, 1)
+        wait(1)
+        for count = 1, 50 do
+    	    mouse1click()
+            wait()
+        end
+        tp(marker2)
+        wait(50)
+        farming = false
+    end
+end
+
