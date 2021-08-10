@@ -1,0 +1,155 @@
+_G.farm = false
+_G.train = "Curl Up"
+local Player = game.Players.LocalPlayer
+local accept = Player.PlayerGui.HUD.Bottom.Dialogue.Option1
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Debris = game:GetService("Debris")
+local gui = Player.PlayerGui.HUD.Mid.Workout
+local marker = game.Workspace.Misc.DSpot2
+local user = game:GetService("VirtualUser")
+local vim = game:GetService("VirtualInputManager")
+local endurance = Player.Character.SEF.Endurance
+local KeyBind = Enum.KeyCode.LeftBracket -- farming
+local clicking = false
+
+coroutine.wrap(function()
+    local floor = Instance.new("Part")
+    floor.Anchored = true
+    floor.Parent = Workspace
+    floor.Size = Vector3.new(3500,1,3500)
+    floor.Position = marker.Position + Vector3.new(0,-5,0)
+    wait(3)
+    game.Workspace.Map:Destroy()
+end)()
+
+local function training()
+    for i,v in ipairs(gui:GetDescendants()) do
+        if v.ClassName == "TextLabel" then
+            coroutine.wrap(function()
+                key = v.Text
+                vim:SendKeyEvent(true,key,false,game)
+                vim:SendKeyEvent(false,key,false,game)
+                return true
+            end)()
+        end
+    end
+    return false
+end
+
+local function tp(obj)
+    local num = (Player:DistanceFromCharacter(obj.Position)/50)
+    local Tween = TweenService:Create(Player.Character.HumanoidRootPart, TweenInfo.new(num,Enum.EasingStyle.Linear), {CFrame = CFrame.new(obj.Position + Vector3.new(0,-0.75,0))})
+    Tween:Play()
+    Tween.Completed:Wait()
+    Tween:Destroy()
+end
+
+local function cals()
+    local str = string.match(Player.PlayerGui.HUD2.Mid.Menu.Stats.CaloriesLabel.Text, "%d+")
+    return tonumber(str)
+end
+
+local function click()
+    local mouse = Player:GetMouse()
+    user:CaptureController()
+    user:ClickButton1(Vector2.new(mouse.x,mouse.y))    
+end
+
+local function eat(item,n)
+    for i,v in ipairs(game.Workspace.Shops:GetDescendants()) do
+        if v.Name == item and v:FindFirstChild("ClickDetector") then
+            tp(v)
+            fireclickdetector(v.ClickDetector,1)
+            wait()
+            if Player.Character:FindFirstChildWhichIsA("Tool") then
+                Player.Character:FindFirstChildWhichIsA("Tool").Parent = Player.Backpack
+            end
+            if Player.Backpack:FindFirstChild(n) then
+                it = Player.Backpack:FindFirstChild(n)
+                it.Parent = Player.Character
+                repeat click() wait() until not Player.Character:FindFirstChild(it) 
+            end
+            wait()
+        end
+    end
+end
+
+function Effect(Color)
+    for i = 1, 7 do
+        local Character = Player.Character or Player.CharacterAdded:Wait()
+		local beam = Instance.new("Part")
+		local mesh = Instance.new("SpecialMesh")
+		beam.CastShadow = false
+		beam.Massless = true
+		beam.CanCollide = false
+		beam.CanTouch = false
+		beam.Anchored = false
+		mesh.MeshType = "Sphere"
+		mesh.Parent = beam
+		beam.Size = Vector3.new(1.5,1.5,1.5)
+		beam.Material = "Neon"
+		beam.BrickColor = BrickColor.new(Color)
+		beam.Parent = game.Workspace
+		local RandomTingz = math.random(-360,360)
+		beam.CFrame = Character:WaitForChild("HumanoidRootPart").CFrame
+		local weld = Instance.new("WeldConstraint")
+		weld.Part0 = beam
+		weld.Part1 = Character:WaitForChild("HumanoidRootPart")
+		weld.Parent = beam
+		beam.Orientation = Vector3.new(RandomTingz,RandomTingz ,RandomTingz)
+		local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+		local tw1 = TweenService:Create(beam, tweenInfo,  {Size = Vector3.new(0,15,0),Transparency = 1})
+		tw1:Play()
+		Debris:AddItem(beam,0.5)			               
+	end
+end
+
+UserInputService.InputBegan:Connect(function(Input, Typing)
+	if Input.KeyCode == KeyBind and not Typing then
+		if _G.farm  then
+			_G.farm = false
+			Effect("Really red")
+		else 
+			_G.farm = true
+			Effect("Lime green")
+		end
+		print(_G.farm)
+	end
+end)
+
+while wait(0.75) do
+    if clicking ~= true and _G.farm and training() == false and cals() ~= 0 and endurance.Value >= 20 then
+        clicking = true
+        click()
+        training()
+        wait(0.3)
+        training()
+        clicking = false
+    elseif clicking ~= true and _G.farm and cals() == 0 then
+        clicking = true
+        repeat eat("Slice of Cake | $50","Cake") wait() until cals() >= 1300
+        if not Player.Backpack:FindFirstChild("Muscle Milk") then
+            eat("Muscle Milk Supplement | $600","Muscle Milk")
+        end
+        wait(3)
+        if Player.Backpack:FindFirstChild("Muscle Milk") then
+            Player.Backpack:FindFirstChild("Muscle Milk").Parent = Player.Character
+        end
+        for count = 1, 10 do
+    	    click()
+            wait(1)
+        end
+        for i,v in ipairs(Player.Character:GetChildren()) do
+            if v:IsA("Tool") then v.Parent = Player.Backpack end
+        end
+        wait(4)
+        if Player.Backpack:FindFirstChild(_G.train) then
+            Player.Backpack:FindFirstChild(_G.train).Parent = Player.Character
+        end
+        clicking = false
+    elseif _G.farm and endurance.Value <= 20 then
+        wait(13)
+    end
+end
