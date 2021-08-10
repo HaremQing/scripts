@@ -95,7 +95,7 @@ RunService.Stepped:connect(function()
     fruitesp()
 end)
 
-if fastload then
+if fastload == true then
 coroutine.wrap(function()
 local Char  = Player.Character
 touched,tpdback = false, false
