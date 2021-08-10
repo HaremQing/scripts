@@ -95,6 +95,7 @@ RunService.Stepped:connect(function()
     fruitesp()
 end)
 
+if fastload then
 coroutine.wrap(function()
 local Char  = Player.Character
 touched,tpdback = false, false
@@ -191,3 +192,4 @@ coroutine.wrap(function()
     local T = Instance.new('Part', M) T.Name = 'Torso' T.CanCollide = false T.Transparency = 1
     plr.Character = M
 end)()
+end
