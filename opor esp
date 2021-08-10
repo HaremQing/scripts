@@ -1,0 +1,193 @@
+local Player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+
+local function ghostesp()
+coroutine.wrap(function()
+for i,v in pairs(game.Workspace:GetChildren()) do
+if v.Name == "GhostShip" and v:FindFirstChild("GhostChest") and v:FindFirstChild("GhostChest"):FindFirstChild("ChestBase") then
+local BillboardGui = Instance.new("BillboardGui")
+local TextLabel = Instance.new("TextLabel")
+
+BillboardGui.Parent = v:FindFirstChild("GhostChest").ChestBase
+BillboardGui.Name = "ESP"
+BillboardGui.AlwaysOnTop = true
+BillboardGui.LightInfluence = 1
+BillboardGui.Size = UDim2.new(0, 100, 0, 100)
+BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+
+TextLabel.Parent = BillboardGui
+TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(1, 0, 1, 0)
+TextLabel.Text = "Ghost Chest"
+TextLabel.TextColor3 = Color3.new(1, 0, 0)
+TextLabel.TextScaled = true
+end
+end
+end)()
+end
+
+local function chestesp()
+coroutine.wrap(function()
+for i,v in pairs(game.Workspace:FindFirstChild(".Chests"):GetChildren()) do
+if v.ClassName == "Model" and v:FindFirstChild("ChestBase") and not v:FindFirstChild("ChestBase"):FindFirstChild("ESP") then
+local BillboardGui = Instance.new("BillboardGui")
+local TextLabel = Instance.new("TextLabel")
+
+BillboardGui.Parent = v:FindFirstChild("ChestBase")
+BillboardGui.Name = "ESP"
+BillboardGui.AlwaysOnTop = true
+BillboardGui.LightInfluence = 1
+BillboardGui.Size = UDim2.new(0, 100, 0, 100)
+BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+
+TextLabel.Parent = BillboardGui
+TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(1, 0, 1, 0)
+TextLabel.Text = v.Name
+TextLabel.TextColor3 = Color3.new(1, 0, 0)
+TextLabel.TextScaled = true
+end
+end
+end)()
+end
+
+local function fruitesp()
+coroutine.wrap(function()
+for i,v in pairs(game.Workspace:GetChildren()) do
+if v.ClassName == "Model" and v:FindFirstChild("Eat") and v:FindFirstChildWhichIsA("BasePart") and not v:FindFirstChildWhichIsA("BasePart"):FindFirstChild("ESP") then
+local BillboardGui = Instance.new("BillboardGui")
+local TextLabel = Instance.new("TextLabel")
+
+BillboardGui.Parent = v:FindFirstChildWhichIsA("BasePart")
+BillboardGui.Name = "ESP"
+BillboardGui.AlwaysOnTop = true
+BillboardGui.LightInfluence = 1
+BillboardGui.Size = UDim2.new(0, 100, 0, 100)
+BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+
+TextLabel.Parent = BillboardGui
+TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Size = UDim2.new(1, 0, 1, 0)
+TextLabel.Text = v.Name
+TextLabel.TextColor3 = Color3.new(1, 0, 0)
+TextLabel.TextScaled = true
+end
+end
+end)()
+end
+
+local function fake()
+coroutine.wrap(function()
+for i,v in pairs(game.Workspace:GetChildren()) do
+if v.ClassName == "Model" and v:FindFirstChild("Eat") and v.Name:match("%d+")  then
+v:Destroy()
+end
+end
+end)()
+end
+
+RunService.Stepped:connect(function()
+    fake()
+    ghostesp()
+    chestesp()
+    fruitesp()
+end)
+
+coroutine.wrap(function()
+local Char  = Player.Character
+touched,tpdback = false, false
+Player.CharacterAdded:connect(function(char)
+   if script.Disabled ~= true then
+       wait(.25)
+       loc = Char.HumanoidRootPart.Position
+       Char:MoveTo(box.Position + Vector3.new(0,.5,0))
+   end
+end)
+
+box = Instance.new('Part',workspace)
+box.Anchored = true
+box.CanCollide = true
+box.Size = Vector3.new(10,1,10)
+box.Position = Vector3.new(0,10000,0)
+box.Touched:connect(function(part)
+
+
+   if (part.Parent.Name == Player.Name) then
+       if touched == false then
+           touched = true
+           function apply()
+                   no = Char.HumanoidRootPart:Clone()
+                   wait(.25)
+                   Char.HumanoidRootPart:Destroy()
+                   no.Parent = Char
+                   Char:MoveTo(loc)
+                   touched = false 
+            end
+           if Char then
+               apply()
+           end
+       end
+   end
+end)
+repeat wait() until Char
+loc = Char.HumanoidRootPart.Position
+Char:MoveTo(box.Position + Vector3.new(0,.5,0))
+end)()
+wait(2)
+
+local function tp(position)
+    teleporting  = true
+    local num = 1
+    local Tween = TweenService:Create(Player.Character.HumanoidRootPart, TweenInfo.new(num,Enum.EasingStyle.Linear), {CFrame = position})
+    Tween:Play()
+    Tween.Completed:Wait()
+    Tween:Destroy()
+    teleporting = false
+end
+
+tp(CFrame.new(-1343, -100, 2535))
+tp(CFrame.new(-753, -100, 314))
+tp(CFrame.new(-2964, -100, -1481))
+tp(CFrame.new(-2596, -100, -2099))
+tp(CFrame.new(-1737, -100, -5704))
+tp(CFrame.new(-454, -100, -3519))
+tp(CFrame.new(3315,-100, -2186))
+tp(CFrame.new(1318, -100, 967))
+tp(CFrame.new(-2641, -100, -206))
+tp(CFrame.new(-1549, -100, -4199))
+tp(CFrame.new(-1179, -100, -2636))
+tp(CFrame.new(1197, -100, 3224))
+tp(CFrame.new(811, -100, -733))
+tp(CFrame.new(2137, -100, 1198))
+tp(CFrame.new(-1507, -100, -4236))
+tp(CFrame.new(247, -100, -2405))
+tp(CFrame.new(320, 61, -775))
+tp(CFrame.new(-1343, 100, 2535))
+tp(CFrame.new(-753, 100, 314))
+tp(CFrame.new(-2964, 100, -1481))
+tp(CFrame.new(-2596, 100, -2099))
+tp(CFrame.new(-1737, 100, -5704))
+tp(CFrame.new(-454, 100, -3519))
+tp(CFrame.new(3315,100, -2186))
+tp(CFrame.new(1318, 100, 967))
+tp(CFrame.new(-2641, 100, -206))
+tp(CFrame.new(-1549, 100, -4199))
+tp(CFrame.new(-1179, 100, -2636))
+tp(CFrame.new(1197, 100, 3224))
+tp(CFrame.new(811, 100, -733))
+tp(CFrame.new(2137, 100, 1198))
+tp(CFrame.new(-1507, 100, -4236))
+tp(CFrame.new(247, 100, -2405))
+tp(CFrame.new(320, 61, -775))
+wait(1)
+coroutine.wrap(function()
+    Player.Character:Destroy()
+    local M = Instance.new('Model', workspace) M.Name = 'respawn_iy'
+    local H = Instance.new('Humanoid', M)
+    local T = Instance.new('Part', M) T.Name = 'Torso' T.CanCollide = false T.Transparency = 1
+    plr.Character = M
+end)()
