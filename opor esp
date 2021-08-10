@@ -95,7 +95,7 @@ RunService.Stepped:connect(function()
     fruitesp()
 end)
 
-if fastload == true then
+if _G.fastload == true then
 print("fast")
 coroutine.wrap(function()
 local Char  = Player.Character
