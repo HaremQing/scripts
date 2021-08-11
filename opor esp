@@ -141,7 +141,7 @@ wait(2)
 
 local function tp(position)
     teleporting  = true
-    local num = 1
+    local num = _G.tpspeed
     local Tween = TweenService:Create(Player.Character.HumanoidRootPart, TweenInfo.new(num,Enum.EasingStyle.Linear), {CFrame = position})
     Tween:Play()
     Tween.Completed:Wait()
