@@ -103,6 +103,7 @@ RunService.Stepped:connect(function()
     ghostesp()
     chestesp()
     fruitesp()
+    bp()
 end)
 
 if _G.fastload == true then
