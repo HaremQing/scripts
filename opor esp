@@ -1,6 +1,24 @@
 local Player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
+ocal StarterGui = game:GetService("StarterGui")
+local KeyBind = Enum.KeyCode.H
+
+UserInputService.InputBegan:Connect(function(Input, Typing)
+	if Input.KeyCode == KeyBind and not Typing then
+		if _G.noclip  then
+			_G.noclip = false
+		else 
+			_G.noclip = true
+		end
+		print(_G.noclip)
+        StarterGui:SetCore("SendNotification", {
+	Title = "Noclip",
+	Text = _G.noclip,
+	Duration = 3,
+})
+    end
+end)
 
 if _G.seats == false then
 for _,delete in pairs(workspace:GetDescendants()) do
@@ -96,14 +114,9 @@ end
 end)()
 end
 
-local function bp()
+local function noclip()
 coroutine.wrap(function()
-for i,v in pairs(Player.Character:GetChildren()) do
-Player.Character.HumanoidRootPart.Velocity = Vector3.new()
-if v.ClassName == "BodyPosition" then
-v:Destroy()
-end
-end
+Players.LocalPlayer.Character.Humanoid:ChangeState(11)
 end)()
 end
 
@@ -112,7 +125,9 @@ RunService.Stepped:connect(function()
     ghostesp()
     chestesp()
     fruitesp()
-    bp()
+    if _G.noclip then
+        noclip()
+    end
 end)
 
 if _G.fastload == true then
