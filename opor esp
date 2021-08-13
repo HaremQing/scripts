@@ -1,7 +1,7 @@
 local Player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
-ocal StarterGui = game:GetService("StarterGui")
+local StarterGui = game:GetService("StarterGui")
 local KeyBind = Enum.KeyCode.H
 
 UserInputService.InputBegan:Connect(function(Input, Typing)
