@@ -2,6 +2,14 @@ local Player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 
+if _G.seats == false then
+for _,delete in pairs(workspace:GetDescendants()) do
+    if delete:IsA("Seat") then
+        delete:Destroy()
+    end
+end
+end
+
 local function ghostesp()
 coroutine.wrap(function()
 for i,v in pairs(game.Workspace:GetChildren()) do
@@ -91,6 +99,7 @@ end
 local function bp()
 coroutine.wrap(function()
 for i,v in pairs(Player.Character:GetChildren()) do
+Player.Character.HumanoidRootPart.Velocity = Vector3.new()
 if v.ClassName == "BodyPosition" then
 v:Destroy()
 end
