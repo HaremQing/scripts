@@ -120,7 +120,9 @@ if _G.fastload == true then
 	tp(CFrame.new(-1507, 100, -4236))
 	tp(CFrame.new(247, 100, -2405))
 	tp(CFrame.new(-125, 100, -1698))
-	tp(CFrame.new(320, 61, -775))
+	tp(CFrame.new(320, 100, -775))
+	tp(CFrame.new(-1513, 1878, 7992))
+	tp(CFrame.new(-1847, 2714, -10273))
 	for i,v in pairs(game:GetService("Workspace").Spawns:GetDescendants()) do
 		if v.Name == "Spawn" then 
 			tp(v.CFrame * CFrame.new(0,100,0))
