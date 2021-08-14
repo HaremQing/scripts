@@ -1,0 +1,169 @@
+_G.fastload = true -- fast loading
+_G.tpspeed = 1 -- speed of loading, lower is faster
+_G.seats = false -- keep seats
+local Player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local StarterGui = game:GetService("StarterGui")
+
+local function removeseats()
+	if _G.seats == false then
+		for _,delete in pairs(workspace:GetDescendants()) do
+			if delete:IsA("Seat") then
+				delete:Destroy()
+			end
+		end
+	end
+end
+
+local function respawn()
+	Player.Character:Destroy()
+	local M = Instance.new('Model', workspace) M.Name = 'respawn_iy'
+	local H = Instance.new('Humanoid', M)
+	local T = Instance.new('Part', M) T.Name = 'Torso' T.CanCollide = false T.Transparency = 1
+	Player.Character = M
+end
+
+local function tp(position,time)
+	teleporting  = true
+	local num = time or 0.2
+	local Tween = TweenService:Create(Player.Character.HumanoidRootPart, TweenInfo.new(num,Enum.EasingStyle.Linear), {CFrame = position})
+	Tween:Play()
+	Tween.Completed:Wait()
+	Tween:Destroy()
+	teleporting = false
+end
+
+local function fake()
+	coroutine.wrap(function()
+		for i,v in pairs(game.Workspace:GetChildren()) do
+			if v.ClassName == "Model" and v:FindFirstChild("Eat") and v.Name:match("%d+")  then
+				v:Destroy()
+			end
+		end
+	end)()
+end
+
+if _G.fastload == true then
+	print("fast")
+	coroutine.wrap(function()
+		local Char  = Player.Character
+		touched,tpdback = false, false
+		Player.CharacterAdded:connect(function(char)
+			if script.Disabled ~= true then
+				wait(.25)
+				loc = Char.HumanoidRootPart.Position
+				Char:MoveTo(box.Position + Vector3.new(0,.5,0))
+			end
+		end)
+
+		box = Instance.new('Part',workspace)
+		box.Anchored = true
+		box.CanCollide = true
+		box.Size = Vector3.new(10,1,10)
+		box.Position = Vector3.new(0,10000,0)
+		box.Touched:connect(function(part)
+
+
+			if (part.Parent.Name == Player.Name) then
+				if touched == false then
+					touched = true
+					function apply()
+						no = Char.HumanoidRootPart:Clone()
+						wait(.25)
+						Char.HumanoidRootPart:Destroy()
+						no.Parent = Char
+						Char:MoveTo(loc)
+						touched = false 
+					end
+					if Char then
+						apply()
+					end
+				end
+			end
+		end)
+		repeat wait() until Char
+		loc = Char.HumanoidRootPart.Position
+		Char:MoveTo(box.Position + Vector3.new(0,.5,0))
+		end)()
+	wait(2)
+
+	tp(CFrame.new(-1343, -100, 2535))
+	tp(CFrame.new(-753, -100, 314))
+	tp(CFrame.new(-2964, -100, -1481))
+	tp(CFrame.new(-2596, -100, -2099))
+	tp(CFrame.new(-1737, -100, -5704))
+	tp(CFrame.new(-454, -100, -3519))
+	tp(CFrame.new(3315,-100, -2186))
+	tp(CFrame.new(1318, -100, 967))
+	tp(CFrame.new(-2641, -100, -206))
+	tp(CFrame.new(-1549, -100, -4199))
+	tp(CFrame.new(-1179, -100, -2636))
+	tp(CFrame.new(1197, -100, 3224))
+	tp(CFrame.new(811, -100, -733))
+	tp(CFrame.new(2137, -100, 1198))
+	tp(CFrame.new(-1507, -100, -4236))
+	tp(CFrame.new(247, -100, -2405))
+	tp(CFrame.new(-125, -100, -1698))
+	tp(CFrame.new(320, 61, -775))
+	tp(CFrame.new(-1343, 100, 2535))
+	tp(CFrame.new(-753, 100, 314))
+	tp(CFrame.new(-2964, 100, -1481))
+	tp(CFrame.new(-2596, 100, -2099))
+	tp(CFrame.new(-1737, 100, -5704))
+	tp(CFrame.new(-454, 100, -3519))
+	tp(CFrame.new(3315,100, -2186))
+	tp(CFrame.new(1318, 100, 967))
+	tp(CFrame.new(-2641, 100, -206))
+	tp(CFrame.new(-1549, 100, -4199))
+	tp(CFrame.new(-1179, 100, -2636))
+	tp(CFrame.new(1197, 100, 3224))
+	tp(CFrame.new(811, 100, -733))
+	tp(CFrame.new(2137, 100, 1198))
+	tp(CFrame.new(-1507, 100, -4236))
+	tp(CFrame.new(247, 100, -2405))
+	tp(CFrame.new(-125, 100, -1698))
+	tp(CFrame.new(320, 61, -775))
+	wait(1)
+	respawn()
+end
+
+local function remove(object)
+	if object then object:Destroy() end
+end
+
+local function tpchest()
+local chests = {}
+	for i,v in ipairs (game:GetService("Workspace"):GetChildren()) do
+		if v.Name == "GhostShip" then
+			for i,chest in ipairs(v:GetChildren()) do
+				if chest:FindFirstChild("ChestBase") and not table.find(chests,chest.ChestBase) then
+					table.insert(chests,chest.ChestBase)
+				end
+			end
+		end 
+	end
+	for i,v in pairs(chests) do
+		if v then
+			Player.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0,-25,0)
+			wait(1.5)
+			tp(v.CFrame,_G.tpspeed)
+			if table.find(chests,v) then
+				remove(v)
+			end
+			wait(1)
+		end
+	end
+end
+
+RunService.Stepped:connect(function()
+	coroutine.wrap(function()
+		Player.Character.Humanoid:ChangeState(11)
+	end)()
+end)
+
+while wait(5) do
+	fake()
+	removeseats()
+	tpchest()
+end
