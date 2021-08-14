@@ -154,7 +154,7 @@ local function tpchest()
 		end 
 	end
 	for i,v in pairs(chests) do
-		if v then
+		if v and Player.Character:FindFirstChild("HumanoidRootPart") then
 			Player.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0,-25,0)
 			wait(1.5)
 			tp(v.CFrame,_G.tpspeed)
@@ -164,7 +164,9 @@ local function tpchest()
 			wait(1)
 		end
 	end
-	Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
+	if Player.Character:FindFirstChild("HumanoidRootPart") then
+		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
+	end
 end
 
 RunService.Stepped:connect(function()
