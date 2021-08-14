@@ -1,6 +1,3 @@
-_G.fastload = true -- fast loading
-_G.tpspeed = 1 -- speed of loading, lower is faster
-_G.seats = false -- keep seats
 local Player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
