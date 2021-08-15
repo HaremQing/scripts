@@ -176,9 +176,11 @@ end
 local function checkweapons()
 	for i,v in ipairs(Player.Backpack:GetChildren()) do
 		if table.find(_G.stopweapons,v.Name) then
+			print("true")
 			return true
 		end
 	end
+	print("false")
 	return false
 end
 
@@ -200,7 +202,7 @@ local function tpchest()
 		end 
 	end
 	for i,v in pairs(chests) do
-		if v and Player.Character:FindFirstChild("HumanoidRootPart") and checkweapons() then
+		if v and Player.Character:FindFirstChild("HumanoidRootPart") and not checkweapons() then
 			Player.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0,-25,0)
 			wait(1.5)
 			tp(v.CFrame,_G.tpspeed)
