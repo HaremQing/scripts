@@ -159,6 +159,12 @@ if _G.fastload == true then
 	tp(CFrame.new(6000, 100, -10273))
 	tp(CFrame.new(7000, 100, 7992))
 	tp(CFrame.new(8000, 100, -10273))
+	tp(CFrame.new(15000, 100, 7992))
+	tp(CFrame.new(25000, 100, -10273))
+	tp(CFrame.new(1305, 100, 350))
+	tp(CFrame.new(15000, -100, 7992))
+	tp(CFrame.new(25000, -100, -10273))
+	tp(CFrame.new(1305, -100, 350))
 	wait(1)
 	respawn()
 end
