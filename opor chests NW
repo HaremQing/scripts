@@ -173,6 +173,15 @@ local function remove(object)
 	if object then object:Destroy() end
 end
 
+local function checkweapons()
+	for i,v in ipairs(Player.Backpack:GetChildren()) do
+		if table.find(_G.stopweapons,v.Name) then
+			return true
+		end
+	end
+	return false
+end
+
 local function tpchest()
 	local chests = {}
 	for i,v in ipairs (game:GetService("Workspace"):GetChildren()) do
@@ -191,7 +200,7 @@ local function tpchest()
 		end 
 	end
 	for i,v in pairs(chests) do
-		if v and Player.Character:FindFirstChild("HumanoidRootPart") then
+		if v and Player.Character:FindFirstChild("HumanoidRootPart") and checkweapons() then
 			Player.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0,-25,0)
 			wait(1.5)
 			tp(v.CFrame,_G.tpspeed)
