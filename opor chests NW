@@ -219,7 +219,9 @@ end
 
 game.Players.PlayerAdded:Connect(function(player)
 	if _G.autokick and not checkweapons() then
-		Player:Kick(player.name .. "joined the game and ruined your farming")
+		Player:Kick(player.name .. " joined the game and ruined your farming")
+		wait()
+		game:GetService("TeleportService"):Teleport(705844193, Player)
 	end
 end)
 
