@@ -217,6 +217,12 @@ local function tpchest()
 	end
 end
 
+game.Players.PlayerAdded:Connect(function(player)
+	if _G.autokick and not checkweapons() then
+		Player:Kick(player.name .. "joined the game and ruined your farming")
+	end
+end)
+
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
 		Player.Character.Humanoid:ChangeState(11)
