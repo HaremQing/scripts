@@ -3,6 +3,26 @@ local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 
+local function webhook(content)
+local embed = game:GetService("HttpService"):JSONEncode({
+['content'] = content
+})
+syn.request({
+Url = "https://discord.com/api/webhooks/877035102780141629/C6jCiTPrTtWiJs51TDX0--DLEdmXT6ea6ZpCE-cDK2a1MLkjsaoV7otYaPEblH_-1DNc",
+Method = "POST",
+Headers = {["Content-Type"] = "application/json"},
+Body = embed,
+})
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+	if _G.autokick and not checkweapons() then
+		Player:Kick(player.name .. " joined the game and ruined your farming")
+		webhook(player.name)
+		game:GetService("TeleportService"):Teleport(705844193, Player)
+	end
+end)
+
 local function removeseats()
 	if _G.seats == false then
 		for _,delete in pairs(workspace:GetDescendants()) do
@@ -216,14 +236,6 @@ local function tpchest()
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
 	end
 end
-
-game.Players.PlayerAdded:Connect(function(player)
-	if _G.autokick and not checkweapons() then
-		Player:Kick(player.name .. " joined the game and ruined your farming")
-		wait(60)
-		game:GetService("TeleportService"):Teleport(705844193, Player)
-	end
-end)
 
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
