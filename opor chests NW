@@ -27,6 +27,7 @@ Player.CharacterAdded:Connect(function()
 	local backpack = Player:WaitForChild("Backpack")
 		
 	backpack.ChildAdded:Connect(function(child)
+		print("child.Name")
 		if child:FindFirstChild("EquippableSword") then
 			webhook(child.Name .. " has been found")
 		end
