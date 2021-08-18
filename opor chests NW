@@ -8,7 +8,7 @@ local embed = game:GetService("HttpService"):JSONEncode({
 ['content'] = content
 })
 syn.request({
-Url = webh,
+Url = _G.webhook,
 Method = "POST",
 Headers = {["Content-Type"] = "application/json"},
 Body = embed,
