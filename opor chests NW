@@ -18,7 +18,7 @@ end
 local function checkweapons()
 	for i,v in ipairs(Player.Backpack:GetChildren()) do
 		if table.find(_G.stopweapons,v.Name) then
-			print("true")
+			webhook(v.Name .. " has been found")
 			return true
 		end
 	end
@@ -236,13 +236,6 @@ local function tpchest()
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
 	end
 end
-
-game.Players.LocalPlayer:WaitForChild("Backpack").ChildAdded:Connect(function(v)
-	print(v.Name)
-	if v:FindFirstChild("EquippableSword") then
-		webhook(child.Name .. " has been found")
-	end
-end)
 
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
