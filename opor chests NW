@@ -33,13 +33,6 @@ game.Players.PlayerAdded:Connect(function(player)
 		game:GetService("TeleportService"):Teleport(705844193, Player)
 	end
 end)
-		
-	Player:WaitForChild("Backpack").ChildAdded:Connect(function(child)
-		print("child.Name")
-		if child:FindFirstChild("EquippableSword") then
-			webhook(child.Name .. " has been found")
-		end
-	end)
 
 local function removeseats()
 	if _G.seats == false then
@@ -243,6 +236,13 @@ local function tpchest()
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
 	end
 end
+
+	Player:WaitForChild("Backpack").ChildAdded:Connect(function(child)
+		print("child.Name")
+		if child:FindFirstChild("EquippableSword") then
+			webhook(child.Name .. " has been found")
+		end
+	end)
 
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
