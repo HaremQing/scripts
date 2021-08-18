@@ -237,12 +237,12 @@ local function tpchest()
 	end
 end
 
-	Player:WaitForChild("Backpack").ChildAdded:Connect(function(child)
-		print("child.Name")
-		if child:FindFirstChild("EquippableSword") then
-			webhook(child.Name .. " has been found")
-		end
-	end)
+game.Players.LocalPlayer:WaitForChild("Backpack").ChildAdded:Connect(function(v)
+	print(v.Name)
+	if v:FindFirstChild("EquippableSword") then
+		webhook(child.Name .. " has been found")
+	end
+end)
 
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
