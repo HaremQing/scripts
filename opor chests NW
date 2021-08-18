@@ -4,21 +4,20 @@ local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
 
 local function webhook(content)
-local embed = game:GetService("HttpService"):JSONEncode({
-['content'] = content
-})
-syn.request({
-Url = _G.webhook,
-Method = "POST",
-Headers = {["Content-Type"] = "application/json"},
-Body = embed,
-})
+	local embed = game:GetService("HttpService"):JSONEncode({
+	['content'] = content
+	})
+	syn.request({
+	Url = _G.webhook,
+	Method = "POST",
+	Headers = {["Content-Type"] = "application/json"},
+	Body = embed,
+	})
 end
 
 local function checkweapons()
 	for i,v in ipairs(Player.Backpack:GetChildren()) do
 		if table.find(_G.stopweapons,v.Name) then
-			webhook(v.Name .. " has been found")
 			return true
 		end
 	end
