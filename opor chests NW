@@ -15,6 +15,17 @@ Body = embed,
 })
 end
 
+local function checkweapons()
+	for i,v in ipairs(Player.Backpack:GetChildren()) do
+		if table.find(_G.stopweapons,v.Name) then
+			print("true")
+			return true
+		end
+	end
+	print("false")
+	return false
+end
+
 game.Players.PlayerAdded:Connect(function(player)
 	if _G.autokick and not checkweapons() then
 		Player:Kick(player.name .. " joined the game and ruined your farming")
@@ -202,17 +213,6 @@ end
 
 local function remove(object)
 	if object then object:Destroy() end
-end
-
-local function checkweapons()
-	for i,v in ipairs(Player.Backpack:GetChildren()) do
-		if table.find(_G.stopweapons,v.Name) then
-			print("true")
-			return true
-		end
-	end
-	print("false")
-	return false
 end
 
 local function tpchest()
