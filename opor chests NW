@@ -8,7 +8,7 @@ local embed = game:GetService("HttpService"):JSONEncode({
 ['content'] = content
 })
 syn.request({
-Url = "https://discord.com/api/webhooks/877035102780141629/C6jCiTPrTtWiJs51TDX0--DLEdmXT6ea6ZpCE-cDK2a1MLkjsaoV7otYaPEblH_-1DNc",
+Url = webh,
 Method = "POST",
 Headers = {["Content-Type"] = "application/json"},
 Body = embed,
@@ -18,7 +18,7 @@ end
 game.Players.PlayerAdded:Connect(function(player)
 	if _G.autokick and not checkweapons() then
 		Player:Kick(player.name .. " joined the game and ruined your farming")
-		webhook(player.name)
+		webhook("https://www.roblox.com/users/" .. player.UserId .. "/profile")
 		game:GetService("TeleportService"):Teleport(705844193, Player)
 	end
 end)
@@ -236,6 +236,16 @@ local function tpchest()
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
 	end
 end
+
+Player.CharacterAdded:Connect(function()
+		local backpack = player:WaitForChild("Backpack")
+		
+		backpack.ChildAdded:Connect(function(child)
+			if child:FindFirstChild("EquippableSword") then
+				webhook(child.Name .. " has been found")
+			end
+		end)
+end)
 
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
