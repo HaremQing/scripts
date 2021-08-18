@@ -23,6 +23,16 @@ game.Players.PlayerAdded:Connect(function(player)
 	end
 end)
 
+Player.CharacterAdded:Connect(function()
+	local backpack = Player:WaitForChild("Backpack")
+		
+	backpack.ChildAdded:Connect(function(child)
+		if child:FindFirstChild("EquippableSword") then
+			webhook(child.Name .. " has been found")
+		end
+	end)
+end)
+
 local function removeseats()
 	if _G.seats == false then
 		for _,delete in pairs(workspace:GetDescendants()) do
@@ -236,16 +246,6 @@ local function tpchest()
 		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,7000,0)
 	end
 end
-
-Player.CharacterAdded:Connect(function()
-		local backpack = player:WaitForChild("Backpack")
-		
-		backpack.ChildAdded:Connect(function(child)
-			if child:FindFirstChild("EquippableSword") then
-				webhook(child.Name .. " has been found")
-			end
-		end)
-end)
 
 RunService.Stepped:connect(function()
 	coroutine.wrap(function()
