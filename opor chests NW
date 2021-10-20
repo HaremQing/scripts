@@ -44,11 +44,8 @@ local function removeseats()
 end
 
 local function respawn()
-	Player.Character:Destroy()
-	local M = Instance.new('Model', workspace) M.Name = 'respawn_iy'
-	local H = Instance.new('Humanoid', M)
-	local T = Instance.new('Part', M) T.Name = 'Torso' T.CanCollide = false T.Transparency = 1
-	Player.Character = M
+	game.Players.LocalPlayer.Character.Humanoid.Health = 0
+	wait(5)
 end
 
 local function tp(position,time)
