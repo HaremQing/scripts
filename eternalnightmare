@@ -1,11 +1,11 @@
 repeat wait() until game:IsLoaded()
 
 if game.PlaceId ~= 7417350864 then
-    local a={[1]=workspace.Interactions.BanditCamps.Data.ID,[2]={[1]="Let's go !"}}game:GetService("ReplicatedStorage").Requests.GetDialog:InvokeServer(unpack(a))
+    local a={[1]=workspace.Interactions["Undercover Druid"].Data.ID,[2]={[1]="Ascension"}}game:GetService("ReplicatedStorage").Requests.GetDialog:InvokeServer(unpack(a))
 end;
     
 while shared.autoBandit and wait() and game.PlaceId == 7417350864 do
-pcall(function() for a,b in pairs(game:GetService("Workspace"):GetDescendants())do if b:IsA("TouchTransmitter")then firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,b.Parent,1)firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,b.Parent,0)end end
+pcall(function() for a,b in pairs(game:GetService("Workspace"):GetDescendants())do if b:IsA("TouchTransmitter") and b.Name ~= "Used" then firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,b.Parent,1)firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,b.Parent,0) b.Name = "Used" end end
     for i,v in pairs(game:GetService("Workspace").Entity:GetChildren()) do
         if game.Players.LocalPlayer.Character and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and not v:FindFirstChild("LookDirection") then
             if v.Humanoid.Health > 0 then
