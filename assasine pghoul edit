@@ -1,0 +1,73 @@
+spawn(function()
+    print("Exe")
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+   wait(1)
+   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+end)
+local function Attack()
+    game.ReplicatedStorage.Events.RemoteEvent:FireServer("Attack",{})
+end
+
+local function ReqEquip()
+    game.ReplicatedStorage.Events.RemoteEvent:FireServer("RequestEquip")
+end
+
+local function hasWeapon()
+    local char = game.Players.LocalPlayer.Character
+    if char:FindFirstChild("Weapon") then
+        return true  
+    end
+    return false
+end
+
+spawn(function()
+    while _G.Farm and wait()do
+        if _G.oneshot_instakill then
+            for i,v in pairs(game:GetService("Workspace").NPCs.Alive:GetChildren())do
+                if v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v.Humanoid.Health < v.Humanoid.MaxHealth then
+                    v.Humanoid.Health = 0	
+                end
+            end
+        end
+    end
+end)
+
+while _G.Farm and wait()do
+    if _G.highvalyourlevel then
+        _G.highval = game:GetService("Players").LocalPlayer.data.stats.level.Value + _G.plushighval
+    end 
+    if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("OverheadGui") then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.OverheadGui:Destroy()
+    end
+    if _G.autoequip then
+        repeat wait(0.5)
+            local char = game.Players.LocalPlayer.Character
+            if not hasWeapon() then
+                ReqEquip()
+            end
+        until hasWeapon() or not _G.autoequip or not _G.Farm
+    end
+    if not _G.stopattack then
+        for i,v in pairs(game:GetService("Workspace").NPCs.Alive:GetChildren())do
+            if v:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("data") and v.data:FindFirstChild("stats") and v.data.stats.level.Value >= _G.minval and v.data.stats.level.Value <= _G.highval and v.HumanoidRootPart.CFrame.Y >= -32 then
+                repeat 
+                    local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local hrp2 = v.HumanoidRootPart
+                    hrp.CFrame = hrp2.CFrame * CFrame.new(0,0,_G.distance)
+                    Attack()
+                    game:GetService("RunService").RenderStepped:wait()
+                until not v:FindFirstChild("HumanoidRootPart") or not game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not v:FindFirstChild("Humanoid") or v.Humanoid.Health <= 0 or not _G.Farm 
+            end
+        end
+    end
+    if _G.autoeat then
+        for i,v in pairs(game:GetService("Workspace").Live:GetChildren())do
+            if v:FindFirstChild("ClickDetector") then
+                fireclickdetector(v.ClickDetector)
+            end
+        end
+    end
+end
